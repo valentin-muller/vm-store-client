@@ -1,10 +1,82 @@
-import React from "react";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
 import Layout from "../core/Layout";
+import { signin, authenticate } from "../auth";
 
-const Signin = () => (
-  <Layout title="Signin" description="Signin to Node React E-commerce App">
-    ...
-  </Layout>
-);
+const Signin = () => {
+  const [values, setValues] = useState({
+    email: "asdsda@gmail.com",
+    password: "Asdsda99",
+    error: "",
+    loading: false,
+    redirectToReferrer: false,
+  });
+
+  const { email, password, loading, error, redirectToReferrer } = values;
+
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, error: false, [name]: event.target.value });
+  };
+
+  const clickSubmit = (event) => {
+    event.preventDefault();
+    setValues({ ...values, error: false, loading: true });
+    signin({ email, password }).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error, loading: false });
+      } else {
+        authenticate(data, () => {
+          setValues({
+            ...values,
+            redirectToReferrer: true,
+          });
+        });
+      }
+    });
+  };
+
+  const signUpForm = () => (
+    <form>
+      <div>
+        <label>Email</label>
+        <input onChange={handleChange("email")} type="email" value={email} />
+      </div>
+
+      <div>
+        <label>Password</label>
+        <input
+          onChange={handleChange("password")}
+          type="password"
+          value={password}
+        />
+      </div>
+      <button onClick={clickSubmit}>Submit</button>
+    </form>
+  );
+
+  const showError = () => <div>{error}</div>;
+
+  const showLoading = () =>
+    loading && (
+      <div>
+        <h2>Loading...</h2>
+      </div>
+    );
+
+  const redirectUser = () => {
+    if (redirectToReferrer) {
+      return <Redirect to="/home" />;
+    }
+  };
+
+  return (
+    <Layout title="Signin" description="Signup to Node React E-commerce App">
+      {showLoading()}
+      {showError()}
+      {signUpForm()}
+      {redirectUser()}
+    </Layout>
+  );
+};
 
 export default Signin;
