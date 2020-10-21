@@ -20,7 +20,7 @@ const Menu = ({ history }) => {
           </Link>
         </li>
         <li>
-          <Link to="/dashboard" style={isActive(history, "/dashboard")}>
+          <Link to="/user/dashboard" style={isActive(history, "/user/dashboard")}>
             dashboard
           </Link>
         </li>
