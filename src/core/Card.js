@@ -1,6 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ShowImage from './showImage'
+import moment from 'moment'
+
+
 const Card = ({ product, showViewProductButton = true }) => {
 
 
@@ -16,6 +19,17 @@ const Card = ({ product, showViewProductButton = true }) => {
       )
   }
 
+  const showAddToCartButton = () => {
+    return (
+              <button>Add to card</button>
+
+    )
+  }
+
+  const showStock = (quantity) => {
+    return quantity > 0 ? <span>In Stock</span> : <span>Out of Stock</span>
+  }
+
   return (
     <div>
       <div>
@@ -23,10 +37,14 @@ const Card = ({ product, showViewProductButton = true }) => {
         <ShowImage item={ product } url="product" />
         <p>{product.description.substring(0, 100)}</p>
         <p>{product.price}</p>
-        <Link to={`/product/${product._id}`}>
+        <p>Category: {product.category && product.category.name}</p>
+        <p>
+          Added on {moment(product.createdAt).fromNow()}
+        </p>
+          {showStock(product.quantity)}
+          <br />
           {showViewButton(showViewProductButton)}
-        </Link>
-        <button>Add to card</button>
+          {showAddToCartButton()}
       </div>
     </div>
   );
