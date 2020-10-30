@@ -29,7 +29,10 @@ const Menu = ({ history }) => {
 
         <li>
           <Link to="/cart" style={isActive(history, "/cart")}>
-            Cart <sup><small>{itemTotal()}</small></sup>
+            Cart{" "}
+            <sup>
+              <small>{itemTotal()}</small>
+            </sup>
           </Link>
         </li>
 
@@ -70,19 +73,17 @@ const Menu = ({ history }) => {
         )}
 
         {isAuthenticated() && (
-          <div>
+          <li>
             <span
-              className="nav-link"
-              style={{ cursor: "pointer", color: "#000000" }}
               onClick={() =>
                 signout(() => {
-                  history.push("/signin");
+                  history.push("/");
                 })
               }
             >
               Signout
             </span>
-          </div>
+          </li>
         )}
       </ul>
     </div>
