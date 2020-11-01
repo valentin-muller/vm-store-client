@@ -10,7 +10,8 @@ const Cart = () => {
 
   useEffect(() => {
     setItems(getCart());
-  }, [items]);
+  }, []);
+  // HERE I REMOVED ITEMS FROM THE BRACKET 
 
   const showItems = (items) => {
     return (
